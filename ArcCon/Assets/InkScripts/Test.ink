@@ -1,5 +1,18 @@
 ﻿EXTERNAL Name(charName)
+EXTERNAL Icon(charName)
+EXTERNAL Character(charName)
 
-{Name("&&&")}
-So, here we are. In a blue void.
-Just you and me, talking.
+{Name("Алиса")}
+{Icon("Alice")}
+{Character("Alice")}
+Привет, давно не виделись!
+
+{Name("Марк")}
+{Icon("Mark")}
+{Character("Mark")}
+Привет!
+
+{Name("Отец")}
+{Icon("Dad")}
+{Character("Dad")}
+Привет!
