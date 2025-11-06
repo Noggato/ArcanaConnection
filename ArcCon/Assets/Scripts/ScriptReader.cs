@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Ink.Runtime;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class ScriptReader : MonoBehaviour
 {
@@ -16,6 +17,10 @@ public class ScriptReader : MonoBehaviour
 
     public Image characterIcon;
     public Image character;
+    
+    // ДОБАВЛЕНО: переменная для отслеживания текущей корутины
+    private Coroutine _currentTypingCoroutine;
+
     void Start()
     {
         LoadStory();
@@ -40,18 +45,38 @@ public class ScriptReader : MonoBehaviour
         
     }
 
-    public void DisplayNextLine() 
+    public void DisplayNextLine()
     {
+        // ДОБАВЛЕНО: Останавливаем предыдущую корутину печати
+        if (_currentTypingCoroutine != null)
+        {
+            StopCoroutine(_currentTypingCoroutine);
+            _currentTypingCoroutine = null;
+        }
+        
         if (_StoryScript.canContinue) // Checking if there is content to go through
         {
-            string text = _StoryScript.Continue(); //Gets Next Line
-            text = text?.Trim(); //Removes White space from the text
-            dialogueBox.text = text; //Displays new text
+            string text = _StoryScript.Continue();
+            text = text?.Trim();
+            // ИСПРАВЛЕНО: Сохраняем ссылку на корутину
+            _currentTypingCoroutine = StartCoroutine(TypeTextCoroutine(text));
+            
         }
-        else 
+        else
         {
-            dialogueBox.text = "That's all folks";
+            SceneManager.LoadScene(0);
         }
+    }
+    
+    private IEnumerator TypeTextCoroutine(string text){
+        dialogueBox.text = "";
+        foreach (char letter in text)
+        {
+            dialogueBox.text += letter;
+            yield return new WaitForSeconds(0.05f);
+        }
+        // ДОБАВЛЕНО: Обнуляем ссылку когда корутина завершена
+        _currentTypingCoroutine = null;
     }
 
     public void ChangeName(string name) 
@@ -69,6 +94,4 @@ public class ScriptReader : MonoBehaviour
     {
         character.sprite = Resources.Load<Sprite>(charName + "/" + charName + "Height");
     }
-    
-
 }
