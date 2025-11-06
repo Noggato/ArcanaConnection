@@ -41,6 +41,7 @@ public class ScriptReader : MonoBehaviour
         _StoryScript.BindExternalFunction("Name", (string charName) => ChangeName(charName));
         _StoryScript.BindExternalFunction("Icon", (string charName) => ChangeCharacterIcon(charName));
         _StoryScript.BindExternalFunction("Character", (string charName) => ChangeCharacter(charName));
+        _StoryScript.BindExternalFunction("Sound", (string soundName) => PlaySound(soundName));
         DisplayNextLine();
         
     }
@@ -93,5 +94,18 @@ public class ScriptReader : MonoBehaviour
     public void ChangeCharacter(string charName)
     {
         character.sprite = Resources.Load<Sprite>(charName + "/" + charName + "Height");
+    }
+     public void PlaySound(string soundName)
+    {
+        AudioClip sound = Resources.Load<AudioClip>("Sounds/" + soundName);
+        if (sound != null)
+        {
+            AudioSource.PlayClipAtPoint(sound, Camera.main.transform.position);
+            Debug.Log("Проигрываем звук: " + soundName);
+        }
+        else
+        {
+            Debug.LogError("Звук не найден: Sounds/" + soundName);
+        }
     }
 }
