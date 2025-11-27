@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
-
+using UnityEngine.SceneManagement;
 
 public class ScreenManager : MonoBehaviour
 {
@@ -43,7 +43,7 @@ public class ScreenManager : MonoBehaviour
         if (enteredCode == correctCode)
         {
             Debug.Log("Код верный! Доступ разрешен.");
-            // Дополнительные действия при успехе
+            SceneManager.LoadScene(1);
             ClearCode();
         }
         else
